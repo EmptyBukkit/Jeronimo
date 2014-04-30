@@ -5,7 +5,7 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @SuppressWarnings("unused")
-public class Jeronimo extends JavaPlugin{
+public class Jeronimo extends JavaPlugin {
 
 	@Override
 	public void onDisable() {
@@ -16,7 +16,4 @@ public class Jeronimo extends JavaPlugin{
 		getLogger().info("===== Jeronimo Plugin has been enabled =====");
 	}
 
-	
-	
-	
 }

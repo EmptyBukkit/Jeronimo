@@ -1,0 +1,7 @@
+name: Jeronimo
+version: 0.0.1
+description: Jeronimo Mini Game
+author: judgetread
+authors: [judgetread] 
+website: http://emptybukkit.com
+main: com.emptybukkit.jeronimo.Jeronimo

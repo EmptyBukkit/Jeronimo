@@ -1,6 +1,7 @@
 package com.emptybukkit.jeronimo;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -8,6 +9,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("unused")
 public class ArenaManager {
 
 	static Jeronimo plugin;
@@ -56,9 +58,10 @@ public class ArenaManager {
 
 			// check id uuid is already in a game
 			for (Arena a : Arena.arenaObjects) {
-				for (UUID u : a.getPlayers()) {
-					if (uuid == u) {
-						Bukkit.getPlayer(u).sendMessage(
+				for (Map.Entry<UUID, Integer> players : a.getPlayers()
+						.entrySet()) {
+					if (uuid == players.getKey()) {
+						Bukkit.getPlayer(uuid).sendMessage(
 								"You are already in " + a.getArenaName());
 						return;
 					}
@@ -71,7 +74,7 @@ public class ArenaManager {
 				if (!arena.isInGame()) {
 
 					// main addPlayers functions
-					arena.getPlayers().add(uuid);
+					arena.getPlayers().put(uuid, 0);
 
 				} else {
 					Bukkit.getPlayer(uuid).sendMessage(
@@ -93,7 +96,7 @@ public class ArenaManager {
 		if (getArena(arenaName) != null) {
 			Arena arena = getArena(arenaName);
 
-			if (arena.getPlayers().contains(uuid)) {
+			if (arena.getPlayers().containsKey(uuid)) {
 
 				arena.getPlayers().remove(uuid);
 			}
@@ -110,8 +113,9 @@ public class ArenaManager {
 			Arena arena = getArena(arenaName);
 			arena.setInGame(false);
 
-			for (UUID u : arena.getPlayers()) {
-				this.removePlayer(u, arenaName);
+			for (Map.Entry<UUID, Integer> players : arena.getPlayers()
+					.entrySet()) {
+				this.removePlayer(players.getKey(), arenaName);
 			}
 
 		}

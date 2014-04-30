@@ -1,10 +1,14 @@
 package com.emptybukkit.jeronimo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 public class Arena {
 
@@ -16,9 +20,11 @@ public class Arena {
 																			// Arena
 																			// Objects
 
-	private ArrayList<UUID> players = new ArrayList<UUID>(); // List of
-																// player
-																// names
+	// private ArrayList<UUID> players = new ArrayList<UUID>(); // List of
+	// player
+	// names
+	private HashMap<UUID, Integer> players = new HashMap<UUID, Integer>();
+
 	private String arenaName; // Name of the arena
 	private int maxPlayers; // Max players for this arena
 	private int minPlayers; // Min players for this arena
@@ -27,7 +33,8 @@ public class Arena {
 	private Location lobbyLoc; // where players will spawn
 
 	// constructor
-	Arena(String arenaName, int maxPlayers, int minPlayers, Location jumpLoc, Location lobbyLoc) {
+	Arena(String arenaName, int maxPlayers, int minPlayers, Location jumpLoc,
+			Location lobbyLoc) {
 		this.arenaName = arenaName;
 		this.maxPlayers = maxPlayers;
 		this.minPlayers = minPlayers;
@@ -58,7 +65,7 @@ public class Arena {
 	}
 
 	// return list of players by name
-	public ArrayList<UUID> getPlayers() {
+	public HashMap<UUID, Integer> getPlayers() {
 		return this.players;
 	}
 
@@ -89,8 +96,8 @@ public class Arena {
 
 	// send all players message
 	public void sendMessage(String message) {
-		for (UUID u : this.players) {
-			Bukkit.getPlayer(u).sendMessage(message);
+		for (Map.Entry<UUID, Integer> players : this.getPlayers().entrySet()) {
+			Bukkit.getPlayer(players.getKey()).sendMessage(message);
 		}
 	}
 
