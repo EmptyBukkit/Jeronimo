@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -48,12 +49,27 @@ public class ArenaManager {
 		return null;
 	}
 
+	
+	public void list(){
+		Bukkit.broadcastMessage("list start");
+		for (Arena a : Arena.arenaObjects) {
+			Bukkit.broadcastMessage(a.getArenaName());
+		}
+		Bukkit.broadcastMessage("list end");
+	}
 	// ==========================================================
 	// addPlayers
 	// Method for adding players to a arena
 	// ==========================================================
 	public void addPlayers(final UUID uuid, final String arenaName) {
 		if (getArena(arenaName) != null) {
+			
+			if (!Arena.arenaObjects.contains(arenaName)) {
+				Bukkit.getPlayer(uuid).sendMessage(
+						"No arena exsist by that name");
+				return;
+			}
+			
 			final Arena arena = getArena(arenaName);
 
 			// check id uuid is already in a game
@@ -68,6 +84,8 @@ public class ArenaManager {
 				}
 			}
 
+			
+			
 			// check if game is already full
 			if (!arena.isFull()) {
 				// check if game has already started
@@ -75,6 +93,10 @@ public class ArenaManager {
 
 					// main addPlayers functions
 					arena.getPlayers().put(uuid, 0);
+					arena.sendMessage(ChatColor.GOLD.toString() + "Player "
+							+ ChatColor.GREEN.toString()
+							+ Bukkit.getPlayer(uuid).getName()
+							+ ChatColor.GOLD.toString() + " has join the game!");
 
 				} else {
 					Bukkit.getPlayer(uuid).sendMessage(
@@ -97,8 +119,23 @@ public class ArenaManager {
 			Arena arena = getArena(arenaName);
 
 			if (arena.getPlayers().containsKey(uuid)) {
-
 				arena.getPlayers().remove(uuid);
+			}
+		}
+
+	}
+
+	// ==========================================================
+	// removePlayersCommand
+	// ==========================================================
+	public void removePlayerCommand(UUID uuid) {
+		// check id uuid is already in a game
+		for (Arena a : Arena.arenaObjects) {
+			for (Map.Entry<UUID, Integer> players : a.getPlayers().entrySet()) {
+				if (uuid == players.getKey()) {
+					removePlayer(uuid, a.getArenaName());
+					return;
+				}
 			}
 		}
 
@@ -113,6 +150,7 @@ public class ArenaManager {
 			Arena arena = getArena(arenaName);
 			arena.setInGame(false);
 
+			// arena.getPlayers().clear();
 			for (Map.Entry<UUID, Integer> players : arena.getPlayers()
 					.entrySet()) {
 				this.removePlayer(players.getKey(), arenaName);

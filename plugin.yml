@@ -5,3 +5,14 @@ author: judgetread
 authors: [judgetread] 
 website: http://emptybukkit.com
 main: com.emptybukkit.jeronimo.Jeronimo
+
+commands:
+  leave:
+    description: Leave a arena
+    aliases: [l]
+  join:
+    description: Leave a arena
+    aliases: [j]
+  jlist:
+    description: Leave a arena
+    aliases: [li]
